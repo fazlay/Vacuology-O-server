@@ -40,6 +40,20 @@ async function run() {
       res.send(singleProduct);
     });
 
+    //-----------------------------Add New PRODUCTS 
+    app.post('/products', async (req, res) => {
+      const newProduct = req.body;
+    const result = await productsCollection.insertOne(newProduct)
+      res.send(result);
+    });
+    //--------------------------------------------Product Delete
+    app.delete('/products/:id', async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: ObjectId(id) };
+      const result = await productsCollection.deleteOne(query);
+      res.json(result);
+    });
     //-----------------------------------------------insert-Update User info in Server
 
     app.post('/user', async (req, res) => {
