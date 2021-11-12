@@ -23,6 +23,7 @@ async function run() {
     const productsCollection = database.collection('products');
     const ordersCollection = database.collection('orders');
     const usersCollection = database.collection('users');
+    const usersReviewCollection = database.collection('userReview');
 
     app.get('/products', async (req, res) => {
       const cursor = productsCollection.find({});
@@ -103,13 +104,13 @@ async function run() {
       res.json(result);
     });
     //--------------------------------order Delete
-    app.delete('/orders/:id', async (req, res) =>{
-      const id =req.params.id
+    app.delete('/orders/:id', async (req, res) => {
+      const id = req.params.id;
       console.log(id);
-      const query ={_id:ObjectId(id)}
-      const result = await ordersCollection.deleteOne(query)
-      res.json(result)
-    })
+      const query = { _id: ObjectId(id) };
+      const result = await ordersCollection.deleteOne(query);
+      res.json(result);
+    });
 
     //-----------------------------------------------------admin creat
     app.put('/user/admin', async (req, res) => {
@@ -130,6 +131,21 @@ async function run() {
         isAdmin = true;
       }
       res.json({ admin: isAdmin });
+    });
+
+    //------------------------------------------ADD REVIEW
+    app.post('/review', async (req, res) => {
+      const review = req.body;
+      console.log(review);
+      const result = await usersReviewCollection.insertOne(review);
+      res.json(result);
+    });
+
+    //------------------------------------------fetch REVIEW
+    app.get('/reviews', async (req, res) => {
+      const cursor = usersReviewCollection.find({});
+      const reviews = await cursor.toArray();
+      res.send(reviews);
     });
   } finally {
   }
