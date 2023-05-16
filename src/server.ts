@@ -63,7 +63,6 @@ async function run() {
     });
     app.put('/user', async (req, res) => {
       const usersInfo = req.body;
-      console.log(userInfo);
       const filter = { email: usersInfo.email };
       const options = { upsrt: true };
       const updateDoc = {
